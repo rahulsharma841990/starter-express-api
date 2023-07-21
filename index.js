@@ -12,7 +12,7 @@ app.get('/screenshot', async (req, res) => {
   }
 
   try {
-    const browser = await puppeteer.launch();
+    const browser = await puppeteer.launch({headless: 'old'});
     const page = await browser.newPage();
     await page.goto(url);
     const screenshot = await page.screenshot({ fullPage: true });
