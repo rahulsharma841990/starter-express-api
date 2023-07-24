@@ -5,12 +5,14 @@ const app = express();
 const PORT = 80;
 
 app.get('/screenshot', async (req, res) => {
-  const { url } = req.query;
+  const { url, name } = req.query;
 
   if (!url) {
     return res.status(400).send('URL parameter is missing.');
   }
-
+  if(!name){
+    name = 'screenshot.png'
+  }
   try {
     const browser = await puppeteer.launch({headless: "new", ignoreDefaultArgs: ['--disable-extensions'],});
     const page = await browser.newPage();
@@ -18,7 +20,7 @@ app.get('/screenshot', async (req, res) => {
     const screenshot = await page.screenshot({ fullPage: true });
     await browser.close();
 
-    res.set('Content-Disposition', 'attachment; filename="screenshot.png"');
+    res.set('Content-Disposition', 'attachment; filename="'+name+'"');
     res.set('Content-Type', 'image/png');
     res.send(screenshot);
   } catch (error) {
