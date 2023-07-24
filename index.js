@@ -18,6 +18,7 @@ app.get('/screenshot', async (req, res) => {
     const screenshot = await page.screenshot({ fullPage: true });
     await browser.close();
 
+    res.set('Content-Disposition', 'attachment; filename="screenshot.png"');
     res.set('Content-Type', 'image/png');
     res.send(screenshot);
   } catch (error) {
